@@ -1,4 +1,5 @@
 # ShortCircuit
+[![Build Status](https://travis-ci.org/RestlessThinker/ShortCircuit.svg?branch=master)](https://travis-ci.org/RestlessThinker/ShortCircuit)
 Circuit Breaker Pattern framework written in Swift
 
 ```swift
