@@ -3,6 +3,8 @@
 
 Circuit Breaker Pattern framework written in Swift
 
+![number5img](https://cloud.githubusercontent.com/assets/1472984/13364737/36d1bb3c-dc96-11e5-9f8e-61ee28387b51.jpg)
+
 ```swift
 let number5 = ShortCircuitFactory.getNSUserDefaultsInstance()
 
