@@ -25,7 +25,8 @@ protocol CircuitBreakerStorageProtocol {
     func saveStatus(serviceName: String, attributeName: String, statusValue: Int, flush: Bool) -> Void
 }
 
-class ShortCircuitFactory {
+@objc
+class ShortCircuitFactory : NSObject {
     
     static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
         let storage = NSUserDefaultsAdapter()
@@ -33,7 +34,8 @@ class ShortCircuitFactory {
     }
 }
 
-class ShortCircuit : CircuitBreakerProtocol {
+@objc
+class ShortCircuit : NSObject, CircuitBreakerProtocol {
     
     var storageAdapter:CircuitBreakerStorageProtocol
     
