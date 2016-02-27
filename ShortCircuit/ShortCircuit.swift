@@ -212,6 +212,7 @@ class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
     }
 }
 
+@objc
 class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
     
     var data : [String: [String:Int]] = [:]
@@ -233,6 +234,7 @@ class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
     }
 }
 
+@objc
 class NSUserDefaultsAdapter : BaseAdapter {
     
     override init (ttl: Int = 3600, cachePrefix: String = "") {
