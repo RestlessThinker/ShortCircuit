@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+@objc
 protocol CircuitBreakerProtocol {
     func isAvailable (serviceName: String) -> Bool
     func reportFailure (serviceName: String) -> Void
@@ -20,6 +20,7 @@ protocol CircuitBreakerProtocol {
     func reportAlive (serviceName: String) -> Void
 }
 
+@objc
 protocol CircuitBreakerStorageProtocol {
     func loadStatus(serviceName: String, attributeName: String) -> Int
     func saveStatus(serviceName: String, attributeName: String, statusValue: Int, flush: Bool) -> Void
@@ -164,8 +165,8 @@ class ShortCircuit : NSObject, CircuitBreakerProtocol {
     }
 }
 
-
-class BaseAdapter : CircuitBreakerStorageProtocol {
+@objc
+class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
  
     /**
      how long the stats array should persist in cache
@@ -211,7 +212,7 @@ class BaseAdapter : CircuitBreakerStorageProtocol {
     }
 }
 
-class DummyAdapter : CircuitBreakerStorageProtocol {
+class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
     
     var data : [String: [String:Int]] = [:]
     
