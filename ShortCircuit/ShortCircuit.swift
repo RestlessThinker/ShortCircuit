@@ -29,7 +29,7 @@ protocol CircuitBreakerStorageProtocol {
 @objc
 public class ShortCircuitFactory : NSObject {
     
-    public static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
+    public class func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
         let storage = NSUserDefaultsAdapter()
         return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
     }
