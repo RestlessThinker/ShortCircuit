@@ -9,7 +9,7 @@
 import Foundation
 
 @objc
-public protocol CircuitBreakerProtocol {
+public protocol CircuitBreaker {
     func isAvailable (serviceName: String) -> Bool
     func reportFailure (serviceName: String) -> Void
     func reportSuccess (serviceName: String) -> Void
@@ -21,7 +21,7 @@ public protocol CircuitBreakerProtocol {
 }
 
 @objc
-protocol CircuitBreakerStorageProtocol {
+protocol CircuitBreakerStorage {
     func loadStatus(serviceName: String, attributeName: String) -> Int
     func saveStatus(serviceName: String, attributeName: String, statusValue: Int, flush: Bool) -> Void
 }
@@ -29,21 +29,21 @@ protocol CircuitBreakerStorageProtocol {
 @objc
 public class ShortCircuitFactory : NSObject {
   
-  public static func getInMemoryInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
+  public static func getInMemoryInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreaker {
     let storage = MemoryAdapter()
     return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
   }
   
-  public static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
+  public static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreaker {
     let storage = NSUserDefaultsAdapter()
     return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
   }
 }
 
 @objc
-public class ShortCircuit : NSObject, CircuitBreakerProtocol {
+public class ShortCircuit : NSObject, CircuitBreaker {
     
-    var storageAdapter:CircuitBreakerStorageProtocol
+    var storageAdapter:CircuitBreakerStorage
     
     var defaultMaxFailures:Int
     
@@ -52,7 +52,7 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
     
     var settings:[String: [String: Int]]
     
-    init (storage: CircuitBreakerStorageProtocol, maxFailures:Int = 20, retryTimeout:Int = 60) {
+    init (storage: CircuitBreakerStorage, maxFailures:Int = 20, retryTimeout:Int = 60) {
         self.storageAdapter = storage
         self.defaultMaxFailures = maxFailures
         self.defaultRetryTimeout = retryTimeout
@@ -67,7 +67,7 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
     * @param Int              retryTimeout how many seconds should we wait before retry
     * @return CircuitBreaker
     */
-    func setServiceSettings(serviceName:String, maxFailures:Int, retryTimeout:Int) -> CircuitBreakerProtocol {
+    func setServiceSettings(serviceName:String, maxFailures:Int, retryTimeout:Int) -> CircuitBreaker {
         self.settings[serviceName]? = ["maxFailures": (maxFailures != 0) ? maxFailures : self.defaultMaxFailures]
         self.settings[serviceName]? = ["retryTimeout": (retryTimeout != 0) ? retryTimeout : self.defaultRetryTimeout]
         return self;
@@ -171,7 +171,7 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
 }
 
 @objc
-class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
+class BaseAdapter : NSObject, CircuitBreakerStorage {
  
     /**
      how long the stats array should persist in cache
@@ -217,7 +217,7 @@ class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
     }
 }
 
-class MemoryAdapter : NSObject, CircuitBreakerStorageProtocol {
+class MemoryAdapter : NSObject, CircuitBreakerStorage {
     
     var data : [String: [String:Int]] = [:]
     
