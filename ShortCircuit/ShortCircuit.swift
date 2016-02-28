@@ -9,7 +9,7 @@
 import Foundation
 
 @objc
-protocol CircuitBreakerProtocol {
+public protocol CircuitBreakerProtocol {
     func isAvailable (serviceName: String) -> Bool
     func reportFailure (serviceName: String) -> Void
     func reportSuccess (serviceName: String) -> Void
@@ -98,7 +98,7 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
         self.storageAdapter.saveStatus(serviceName, attributeName: "lastTest", statusValue: Int(NSDate().timeIntervalSince1970), flush: true)
     }
     
-    func isAlive (serviceName: String) -> Bool {
+    public func isAlive (serviceName: String) -> Bool {
         let failures = self.getFailures(serviceName)
         let maxFailures = self.getMaxFailures(serviceName)
         
@@ -130,11 +130,11 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
         }
     }
     
-    func malfunction (serviceName: String) -> Void {
+    public func malfunction (serviceName: String) -> Void {
         self.setFailures(serviceName, newValue: self.getFailures(serviceName) + 1)
     }
     
-    func reportAlive (serviceName: String) -> Void {
+    public func reportAlive (serviceName: String) -> Void {
         let failures = self.getFailures(serviceName)
         let maxFailures = self.getMaxFailures(serviceName)
         if (failures > maxFailures) {
@@ -152,15 +152,15 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
         }
     }
     
-    func isAvailable (serviceName: String) -> Bool {
+    public func isAvailable (serviceName: String) -> Bool {
         return self.isAlive(serviceName)
     }
     
-    func reportFailure (serviceName: String) -> Void {
+    public func reportFailure (serviceName: String) -> Void {
         self.malfunction(serviceName)
     }
     
-    func reportSuccess (serviceName: String) -> Void {
+    public func reportSuccess (serviceName: String) -> Void {
         self.reportAlive(serviceName)
     }
 }
