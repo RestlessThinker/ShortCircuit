@@ -36,7 +36,7 @@ class ShortCircuitFactory : NSObject {
 }
 
 @objc
-class ShortCircuit : NSObject, CircuitBreakerProtocol {
+public class ShortCircuit : NSObject, CircuitBreakerProtocol {
     
     var storageAdapter:CircuitBreakerStorageProtocol
     
@@ -166,7 +166,7 @@ class ShortCircuit : NSObject, CircuitBreakerProtocol {
 }
 
 @objc
-class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
+public class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
  
     /**
      how long the stats array should persist in cache
@@ -213,7 +213,7 @@ class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
 }
 
 @objc
-class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
+public class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
     
     var data : [String: [String:Int]] = [:]
     
@@ -235,7 +235,7 @@ class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
 }
 
 @objc
-class NSUserDefaultsAdapter : BaseAdapter {
+public class NSUserDefaultsAdapter : BaseAdapter {
     
     override init (ttl: Int = 3600, cachePrefix: String = "") {
         super.init(ttl: ttl, cachePrefix: cachePrefix);
