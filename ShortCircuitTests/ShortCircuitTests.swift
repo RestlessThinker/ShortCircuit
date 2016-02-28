@@ -27,7 +27,7 @@ class ShortCircuitTests: XCTestCase {
     }
     
     func testDummyAdapter() {
-        let dummy = DummyAdapter()
+        let dummy = MemoryAdapter()
         dummy.saveStatus("testService", attributeName: "getUser", statusValue: 1, flush: true)
         XCTAssertTrue(dummy.loadStatus("testService", attributeName: "getUser") == 1, "should be true")
         
@@ -45,8 +45,11 @@ class ShortCircuitTests: XCTestCase {
     }
     
     func testCircuitFactory() {
-        let shortCircuit = ShortCircuitFactory.getNSUserDefaultsInstance()
-        XCTAssertNotNil(shortCircuit)
+      var shortCircuit = ShortCircuitFactory.getNSUserDefaultsInstance()
+      XCTAssertNotNil(shortCircuit)
+      
+      shortCircuit = ShortCircuitFactory.getInMemoryInstance()
+      XCTAssertNotNil(shortCircuit)
     }
 
     func testCloseCircuit() {

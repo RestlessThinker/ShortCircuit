@@ -28,11 +28,16 @@ protocol CircuitBreakerStorageProtocol {
 
 @objc
 public class ShortCircuitFactory : NSObject {
-    
-    public static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
-        let storage = NSUserDefaultsAdapter()
-        return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
-    }
+  
+  public static func getInMemoryInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
+    let storage = MemoryAdapter()
+    return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
+  }
+  
+  public static func getNSUserDefaultsInstance(maxFailures:Int = 20, retryTimeout:Int = 20) -> CircuitBreakerProtocol {
+    let storage = NSUserDefaultsAdapter()
+    return ShortCircuit(storage: storage, maxFailures: maxFailures, retryTimeout: retryTimeout)
+  }
 }
 
 @objc
@@ -166,7 +171,7 @@ public class ShortCircuit : NSObject, CircuitBreakerProtocol {
 }
 
 @objc
-public class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
+class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
  
     /**
      how long the stats array should persist in cache
@@ -212,8 +217,7 @@ public class BaseAdapter : NSObject, CircuitBreakerStorageProtocol {
     }
 }
 
-@objc
-public class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
+class MemoryAdapter : NSObject, CircuitBreakerStorageProtocol {
     
     var data : [String: [String:Int]] = [:]
     
@@ -234,8 +238,7 @@ public class DummyAdapter : NSObject, CircuitBreakerStorageProtocol {
     }
 }
 
-@objc
-public class NSUserDefaultsAdapter : BaseAdapter {
+class NSUserDefaultsAdapter : BaseAdapter {
     
     override init (ttl: Int = 3600, cachePrefix: String = "") {
         super.init(ttl: ttl, cachePrefix: cachePrefix);
