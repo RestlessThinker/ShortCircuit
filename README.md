@@ -19,3 +19,24 @@ if (number5.isAlive("testService")) {
   // service unavailable, do something else
 }
 ```
+
+```obj-c
+id<CircuitBreaker> memoryCircuit = [ShortCircuitFactory getNSUserDefaultsInstance:20 retryTimeout:20];
+  NSString *serviceName = @"testService";
+  if ([memoryCircuit isAvailable:serviceName]) {
+    
+    // upon success
+    // [memoryCircuit reportSuccess:serviceName];
+    // upon failure
+    // [memoryCircuit reportfailure:serviceName];
+    
+  } else {
+    // service unavailable, do something else   
+  }
+}
+```
+
+## Swift Server
+
+A server implementation is in the works. Creating a Redis Adapter.
+
