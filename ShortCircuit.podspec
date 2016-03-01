@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
 		Circuit Breaker Pattern framework written in Swift with multiple data source adapters for storage options for device and server
 		DESC
 
-  s.homepage = "httsp://github.com/RestlessThinker/ShortCircuit"
+  s.homepage = "https://github.com/RestlessThinker/ShortCircuit"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.author = { "Louie Penaflor" => "http://restlessthinker.com" }
   s.social_media_url = "http://twitter.com/RestlessThinker"
